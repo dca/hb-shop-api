@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+
+  postgresql:
+    image: postgres:13.3-alpine3.14
+    restart: always
+    environment:
+      POSTGRES_DB: "hbshop"
+      POSTGRES_USER: "hbshop"
+      POSTGRES_PASSWORD: "my_db_password"
+    ports:
+      - "5432:5432"
