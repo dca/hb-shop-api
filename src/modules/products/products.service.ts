@@ -15,7 +15,7 @@ export class ProductsService {
     private productsRepository: Repository<Product>, // private productsSkuRepository: Repository<ProductSku>,
   ) {}
 
-  async create(createProductDto: CreateProductDto) {
+  public async create(createProductDto: CreateProductDto) {
     const product = new Product();
     product.name = createProductDto.name;
     product.description = createProductDto.description;
@@ -38,19 +38,21 @@ export class ProductsService {
     // return this.productsRepository.save(doc);
   }
 
-  findAll(): Promise<Product[]> {
+  public async findAll(): Promise<Product[]> {
     return this.productsRepository.find({ relations: ['skus'] });
   }
 
-  findOne(id: string): Promise<Product> {
+  public async findOne(id: string): Promise<Product> {
     return this.productsRepository.findOne(id);
   }
 
-  update(id: string, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  public async update(id: string, updateProductDto: UpdateProductDto) {
+    const product = await this.productsRepository.findOne(id);
+    Object.assign(product, updateProductDto);
+    return this.productsRepository.save(product);
   }
 
-  remove(id: string) {
+  public async remove(id: string) {
     return this.productsRepository.delete(id);
   }
 }
