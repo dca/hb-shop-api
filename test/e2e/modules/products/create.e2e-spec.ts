@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
+import * as faker from 'faker';
 import { AppModule } from '../../../../src/app.module';
 
 describe('ProductController (e2e)', () => {
@@ -15,11 +16,23 @@ describe('ProductController (e2e)', () => {
     await app.init();
   });
 
-  it.skip('/api/v1/products (POST)', () => {
+  it('/api/v1/products (POST)', () => {
     return request(app.getHttpServer())
       .post('/api/v1/products')
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .expect('[]');
+      .send({
+        name: `product-${faker.commerce.price()}`,
+        description: faker.commerce.productDescription(),
+        skus: [
+          {
+            name: faker.commerce.color(),
+            description: '',
+            amount: +faker.commerce.price(),
+            price: +faker.commerce.price(),
+          },
+        ],
+      })
+      .set('Accept', 'application/json')
+      .expect(201)
+      .expect('Content-Type', /json/);
   });
 });
