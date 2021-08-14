@@ -1,23 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import * as faker from 'faker';
-import { AppModule } from '../../../../src/app.module';
+
+import { MockApp } from '../../setup';
 
 describe('ProductController (e2e)', () => {
-  let app: INestApplication;
-
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
-  });
-
   it('/api/v1/products (POST)', () => {
-    return request(app.getHttpServer())
+    return request(MockApp.getHttpServer())
       .post('/api/v1/products')
       .send({
         name: `product-${faker.commerce.price()}`,

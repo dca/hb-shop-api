@@ -1,24 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import * as faker from 'faker';
 
-import { AppModule } from '../../../../src/app.module';
+import { MockApp } from '../../setup';
 
 describe('ProductController (e2e)', () => {
-  let app: INestApplication;
-
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
-  });
-
   it('/api/v1/products/:id (GET)', async () => {
-    const product = await request(app.getHttpServer())
+    const product = await request(MockApp.getHttpServer())
       .post('/api/v1/products')
       .set('Accept', 'application/json')
       .send({
@@ -34,7 +21,7 @@ describe('ProductController (e2e)', () => {
         ],
       });
 
-    const res = await request(app.getHttpServer())
+    const res = await request(MockApp.getHttpServer())
       .get('/api/v1/products/' + product.body.id)
       .expect(200)
       .expect('Content-Type', /json/);
