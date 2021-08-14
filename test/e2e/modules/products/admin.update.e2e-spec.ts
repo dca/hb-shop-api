@@ -3,10 +3,11 @@ import * as faker from 'faker';
 
 import { MockApp } from '../../setup';
 
-describe('ProductController (e2e)', () => {
-  it('/api/v1/products (POST)', () => {
-    return request(MockApp.getHttpServer())
-      .post('/api/v1/products')
+describe('AdminProductController (e2e)', () => {
+  it('/admin/api/v1/products/:id (PATCH)', async () => {
+    const product = await request(MockApp.getHttpServer())
+      .post('/admin/api/v1/products')
+      .set('Accept', 'application/json')
       .send({
         name: `product-${faker.commerce.price()}`,
         description: faker.commerce.productDescription(),
@@ -18,9 +19,13 @@ describe('ProductController (e2e)', () => {
             price: +faker.commerce.price(),
           },
         ],
+      });
+    return request(MockApp.getHttpServer())
+      .patch('/admin/api/v1/products/' + product.body.id)
+      .send({
+        name: product.body.name + '_updated',
       })
-      .set('Accept', 'application/json')
-      .expect(201)
+      .expect(200)
       .expect('Content-Type', /json/);
   });
 });

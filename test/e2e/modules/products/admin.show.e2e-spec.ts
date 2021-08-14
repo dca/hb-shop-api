@@ -3,10 +3,10 @@ import * as faker from 'faker';
 
 import { MockApp } from '../../setup';
 
-describe('ProductController (e2e)', () => {
-  it('/api/v1/products/:id (PATCH)', async () => {
+describe('AdminProductController (e2e)', () => {
+  it('/admin/api/v1/products/:id (GET)', async () => {
     const product = await request(MockApp.getHttpServer())
-      .post('/api/v1/products')
+      .post('/admin/api/v1/products')
       .set('Accept', 'application/json')
       .send({
         name: `product-${faker.commerce.price()}`,
@@ -20,12 +20,12 @@ describe('ProductController (e2e)', () => {
           },
         ],
       });
-    return request(MockApp.getHttpServer())
-      .patch('/api/v1/products/' + product.body.id)
-      .send({
-        name: product.body.name + '_updated',
-      })
+
+    const res = await request(MockApp.getHttpServer())
+      .get('/admin/api/v1/products/' + product.body.id)
       .expect(200)
       .expect('Content-Type', /json/);
+
+    expect(res.body.id).toEqual(product.body.id);
   });
 });

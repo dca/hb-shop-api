@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Product } from './entities/product.entity';
-import { ProductSku } from './entities/product_sku.entity';
+import { Product } from '../entities/product.entity';
+import { ProductSku } from '../entities/product_sku.entity';
 
 import { ProductsController } from './products.controller';
-import { ProductsService } from './products.service';
+import { ProductsService } from '../products.service';
 
 export const mockRepository = () => ({
   metadata: {
