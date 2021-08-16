@@ -43,6 +43,7 @@ Run and Visit `http://localhost:3000/doc/`
 
 ```bash
 $ npm run compodoc
+$ // Visit `http://localhost:8080/`  
 ```
 
 
